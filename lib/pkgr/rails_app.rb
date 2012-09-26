@@ -22,7 +22,7 @@ module Pkgr
         cmd = %Q{
           git archive #{git_ref} --prefix=#{archive}/ | ssh #{host} -p #{port} 'cat - > /tmp/#{archive}.tar &&
             set -x && rm -rf /tmp/#{archive} &&
-            cd /tmp && tar xf #{archive}.tar && cd #{archive} &&
+            cd /tmp && tar xf #{archive}.tar && cd #{archive} && git init .
             cat config/boot.rb >> /tmp/pre_boot.rb && cp -f /tmp/pre_boot.rb config/boot.rb &&
             #{debian_steps.join(" &&\n")}'
         }
@@ -41,7 +41,6 @@ module Pkgr
         # Vendor bundler
         "gem1.9.1 install bundler --no-ri --no-rdoc --version #{bundler_version} -i #{target_vendor}",
         "GEM_HOME='#{target_vendor}' #{target_vendor}/bin/bundle install --deployment --without test development",
-        "cd #{root} && git init .",
         "PATH=$PATH:/tmp/node-v0.8.7-linux-x64/bin GEM_HOME='#{target_vendor}' #{target_vendor}/bin/bundle exec rake assets:precompile",
         "rm -rf #{target_vendor}/{cache,doc}",
         "dpkg-buildpackage -us -uc -d"
