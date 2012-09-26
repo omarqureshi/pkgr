@@ -38,7 +38,7 @@ module Pkgr
         # "sudo apt-get install #{debian_runtime_dependencies(true).join(" ")} -y",
         "sudo apt-get install #{debian_build_dependencies(true).join(" ")} -y",
         # Vendor bundler
-        "gem install bundler --no-ri --no-rdoc --version #{bundler_version} -i #{target_vendor}",
+        "gem1.9.1 install bundler --no-ri --no-rdoc --version #{bundler_version} -i #{target_vendor}",
         "GEM_HOME='#{target_vendor}' #{target_vendor}/bin/bundle install --deployment --without test development",
         "rm -rf #{target_vendor}/{cache,doc}",
         "dpkg-buildpackage -us -uc -d"
